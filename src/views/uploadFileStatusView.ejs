@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+
+<body>
+<h1> HI </h1>
+<%= msg %>
+
+
+<div id="uploadOptions">
+
+    <form name="uploadOptions" action="/upload/fileUpload/Options" method="post" >
+        <input list="TTL">
+        Choose how long you want your upload to exist on our servers
+        <datalist id="TTL">
+            <% for(var i = 0; i < ttlOpts.length; i++){ %>
+            <option value="<%=ttlOpts[i]%>"  >
+            <% } %>
+            <!-- get list of times and iterate through and create option tags like bellow
+            <option value="Internet Explorer">
+            <option value="Firefox">
+            <option value="Chrome">
+            <option value="Opera">
+            <option value="Safari">
+            -->
+        </datalist>
+        <br>
+        <input list="friendList">
+        <datalist id="friendList">
+            <% if ( friendList.length == 0 ){ %>
+                <!-- hide friendList input/data list -->
+            <%= "No friend's :( Add some? "%>
+            <% } %>
+            <% for(var i = 0; i < friendList.length; i++){ %>
+            <option value="<%=friendList[i]%>"  >
+                <% } %>
+        </datalist>
+        <input type="submit">
+    </form>
+</div>
+<div id="filePreview">
+    File should be here
+</div>
+</body>

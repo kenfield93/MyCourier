@@ -1,0 +1,75 @@
+var express = require('express');
+var authRouter = express.Router();
+var userModel = require('../model/userModel')();
+var passport = require('passport');
+var bcrypt = require('bcrypt-nodejs');
+var salt = require('../config/config').salt;
+var secureAccountsService = require('../services/secureAccountsService')();
+var messengerService = require('../services/messengerService')();
+
+//TODO save and extract salt so salt val is persistant 
+var router = function(nav, loginEvent, session){
+    authRouter.route('/signUp')
+        .post(function(req, res){
+            var user = req.body;
+            console.log(user);
+            var pwd = bcrypt.hashSync(user.password, salt);
+            var p_addUser = userModel.insertUser(user.userName, pwd);
+            p_addUser.then(function(wasAdded){
+                if(wasAdded !== false || wasAdded != null) {
+                    req.login(user, function () {
+                        secureAccountsService.storeIdInfo(req);
+                        res.redirect('/auth/profile/' + wasAdded);
+                    });
+                }
+                else{
+                    console.log('u failed to signup');
+                }
+            });
+
+        });
+
+    authRouter.route('/profile/')
+        .all( function(req, res, next){
+            if(!req.user){
+                res.redirect('/');
+            }
+            next();
+        })
+        .get(function(req, res){
+            res.json(req.user);
+           // res.render('loginSocketTestView', {nav:nav});
+        });
+    
+    /*
+    authRouter.route('/signIn')
+        .post(passport.authenticate('local',{
+            failureRedirect: '/'
+        }), function( req, res){
+            // think about putting init account func here
+            secureAccountsService.storeIdInfo(req);
+           // loginEvent.emit('login', req.user.id);
+            res.redirect('/auth/profile/');
+        });
+    */
+    authRouter.route('/signIn')
+        .post(function(req, res, next){
+            if( req.user ){ // if user is already loged inf
+            //  TODO   already logged into browser so go to log in 'home page' which i don't have yet
+                return res.redirect('/')
+            }
+            passport.authenticate('local', function(err, user, info) {
+                if (err) { return next(err); }
+                //TODO send flash message for incorrect signIn
+                if (!user) { return res.redirect('/'); }
+                req.logIn(user, function(err) {
+                    if (err) { return next(err); }
+                    secureAccountsService.storeIdInfo(req);
+                    return res.redirect('/auth/profile/');
+                });
+            })(req, res, next);
+        });
+    return authRouter;
+};
+
+module.exports = router;

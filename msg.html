@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> butthole </title>
+		<script type='text/javascript' src="mockFrontEndMsg.js"></script>
+	</head>
+	<body>
+	<!-- TODO: create an html element called 'msgLog' for  that you can print  messages to-->
+	<!-- TODO: create an html element called 'msgInput' for users to write and sumbit new messages-->
+		<script type='text/javascript' defer="defer">
+
+			function displayIncomingMsgs(msgObjs){
+				/*
+				  TODO:
+				  1st: sort msgObjs by their timestamp properties (probably hardest part so do last maybe)
+				  2nd: print messages and who sent them to the 'msgLog'
+
+				  ex:  msgObjs = [
+				  					{msg: "nm", senderName: "kyle", timestamp: 2017-06-13 04:06:29 }.
+				  					{msg: "hey man", senderName: "eli", timestamp: 2017-06-13 04:05:06}
+				  				 ];
+				  you would add those 2 to the msg log like
+				  Eli>: hey man
+				  Kyle>: nm
+					notice how Eli's message gets printed first since it has an earlier timestamp	
+				 */
+			}
+
+			/* can be useful inside displayIncomingMsgs */
+			function printIncomingMsgs(msgObjs){
+				console.log("printIncomingMsgs: printing msgObjs list");
+				arr.map(function(ele){
+					console.log(ele);
+				});
+			}
+
+			function flushOutgoingMsg(){
+				//TODO should get input from msgInput and then clear it
+				// should return the txt you just got
+			}
+			function displaySuccessfulOutgoingMsg(msg, options){
+				//TODO print msg to the msg log.  Ignore options for now
+				//Since user just sent the message you don't need to display their name. 
+				//Maybe just change the color of their text or putting a special symbol or something
+			}
+			function displayFailedOutgoingMsg(msg ){
+				//TODO: print msg and error to msg log. King how apple does if msg doesn’t send. Might wanna change text color to light grey. I would just copy what FB and/or apple does
+			}
+
+
+			var chat = initChatMsg();
+			/*
+			uncomment once you finish 
+			chat.mockEndlessIncomingMsgs(displayIncomingMsgs, 1000);
+			*/
+			
+
+			var newMsgListener = chat.initMockOutgoingMsg(displaySuccessfulOutgoingMsg, displayFailedOutgoingMsg, flushOutgoingMsg);
+			
+			
+			//TODO you after you write the 3 OutgoingMsg functions you have to attatch
+			//newMsgListener to the onSumbit event for the msginput html element
+			
+
+		</script>
+	</body>
+</html>

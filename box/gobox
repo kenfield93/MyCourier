@@ -1,0 +1,6 @@
+load -r /usr/pkg/share/simh/ka655x.bin
+set cpu 64m
+set -l rq0 rauser=1000000
+at rq0 box.img
+at xq0 wm0
+boot cpu
